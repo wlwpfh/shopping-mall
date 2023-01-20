@@ -10,6 +10,7 @@ import org.springframework.test.context.TestPropertySource;
 import com.example.jpastudy.entity.Item;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -33,5 +34,56 @@ class ItemRepositoryTest {
         item.setUpdateTime(LocalDateTime.now());
         Item saveItem=itemRepository.save(item);
         System.out.println(saveItem.toString());
+    }
+
+    void createItemList(){
+        for(int i=1;i<=10;i++){
+            Item item=new Item();
+            item.setItemName("테스트 상품"+i);
+            item.setPrice(10000+i);
+            item.setItemDetail("테스트 상품 상세 설명"+i);
+            item.setItemSellStatus(ItemSellStatus.SELL);
+            item.setStockNumber(100);
+            item.setRegTime(LocalDateTime.now());
+            item.setUpdateTime(LocalDateTime.now());
+            Item saveItem=itemRepository.save(item);
+        }
+    }
+
+    @Test
+    @DisplayName("상품명 조회 테스트")
+    void findByItemNameTest(){
+        this.createItemList();
+        List<Item> itemList=itemRepository.findByItemName("테스트 상품1");
+        for(Item item : itemList){
+            System.out.println(item.toString());
+        }
+    }
+
+    @Test
+    @DisplayName("상품명이나 상품상세 설명 테스트")
+    void findByItemNameOrItemDetailTest(){
+        this.createItemList();
+        List<Item> itemList=itemRepository.findByItemNameOrItemDetail("테스트 상품1", "테스트 상품 상세 설명5");
+        for(Item item:itemList)
+            System.out.println(item.toString());
+    }
+
+    @Test
+    @DisplayName("기격 Less Than 테스트")
+    void findByPriceLessThanTest(){
+        this.createItemList();
+        List<Item> itemList=itemRepository.findByPriceLessThan(10005);
+        for(Item item:itemList)
+            System.out.println(item.toString());
+    }
+
+    @Test
+    @DisplayName("가격 내림차순 조회 테스트")
+    void findByPriceLessThanOrderByPriceDesc(){
+        this.createItemList();
+        List<Item>itemList=itemRepository.findByPriceLessThanOrderByPrice(10005);
+        for(Item item:itemList)
+            System.out.println(item.toString());
     }
 }
