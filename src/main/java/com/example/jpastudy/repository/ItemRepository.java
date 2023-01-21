@@ -2,6 +2,8 @@ package com.example.jpastudy.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import com.example.jpastudy.entity.Item;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
@@ -15,4 +17,7 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
     List<Item> findByItemNameOrItemDetail(String itemName, String itemDetail);
     List<Item> findByPriceLessThan(Integer price);
     List<Item> findByPriceLessThanOrderByPrice(Integer price);
+
+    @Query("select i from Item i where i.itemDetail like %:itemDetail% order by i.price desc")
+    List<Item>  findByItemDetail(@Param("itemDetail")String itemDetail);
 }
