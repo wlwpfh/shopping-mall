@@ -18,5 +18,6 @@ public class Cart {
   private Long id;
 
   @OneToOne
-    private Member memberId;
+  @JoinColumn(name = "member_id")
+  private Member member;
 }
