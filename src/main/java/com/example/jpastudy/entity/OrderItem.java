@@ -28,4 +28,5 @@ public class OrderItem {
     private LocalDateTime regTime;
 
     private LocalDateTime updateTime;
+    private int count;
 }
