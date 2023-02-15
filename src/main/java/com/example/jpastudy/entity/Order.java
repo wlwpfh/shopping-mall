@@ -12,15 +12,15 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
-@Table(name="orders")
-public class Order {
+@Table(name = "orders")
+public class Order extends BaseEntity {
     @Id
     @GeneratedValue
-    @Column(name="order_id")
+    @Column(name = "order_id")
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name="member_id")
+    @JoinColumn(name = "member_id")
     private Member member;
 
     private LocalDateTime orderDate;
@@ -28,11 +28,7 @@ public class Order {
     @Enumerated(EnumType.STRING)
     private OrderStatus orderStatus;
 
-    private LocalDateTime regTime;
-
-    private LocalDateTime updateTime;
-
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    private List<OrderItem> orderItems=new ArrayList<>();
+    private List<OrderItem> orderItems = new ArrayList<>();
 
 }

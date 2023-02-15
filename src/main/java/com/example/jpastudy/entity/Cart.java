@@ -1,6 +1,6 @@
 package com.example.jpastudy.entity;
 
-import lombok.Generated;
+import com.fasterxml.jackson.databind.ser.Serializers;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -8,17 +8,17 @@ import lombok.ToString;
 import javax.persistence.*;
 
 @Entity
-@Table(name="cart")
+@Table(name = "cart")
 @Getter
 @Setter
 @ToString
-public class Cart {
-  @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
-  @Column(name="cart_id")
-  private Long id;
+public class Cart extends BaseEntity {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "cart_id")
+    private Long id;
 
-  @OneToOne(fetch=FetchType.LAZY)
-  @JoinColumn(name = "member_id")
-  private Member member;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id")
+    private Member member;
 }

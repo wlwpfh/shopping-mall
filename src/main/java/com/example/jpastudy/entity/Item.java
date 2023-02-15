@@ -1,6 +1,7 @@
 package com.example.jpastudy.entity;
 
 import com.example.jpastudy.constant.ItemSellStatus;
+import com.fasterxml.jackson.databind.ser.Serializers;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -14,7 +15,7 @@ import java.util.List;
 @ToString
 @Entity
 @Table(name="item")
-public class Item {
+public class Item extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name="item_id")
@@ -35,9 +36,6 @@ public class Item {
 
     @Enumerated(EnumType.STRING)
     private ItemSellStatus itemSellStatus; // 상품 판매 상태
-
-    private LocalDateTime regTime; // 등록 시간
-    private LocalDateTime updateTime; //수정 시간
 
     @ManyToMany
     @JoinTable(
