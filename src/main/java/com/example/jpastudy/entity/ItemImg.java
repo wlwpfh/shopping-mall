@@ -14,6 +14,8 @@ public class ItemImg extends BaseEntity{
     @Column(name = "item_img_id")
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+    private String originalImageName;
+    private String imageName;
 
     private String imageUrl;
 
@@ -23,7 +25,9 @@ public class ItemImg extends BaseEntity{
     @JoinColumn(name = "item_id")
     private Item item;
 
-    public void updateItemImg(String imageUrl){
+    public void updateItemImg(String originalImageName, String imageName,String imageUrl){
+        this.originalImageName=originalImageName;
+        this.imageName=imageName;
         this.imageUrl=imageUrl;
     }
 }
