@@ -74,7 +74,7 @@
       </div>
       <input type="text" th:field="*{itemName}" class="form-control" placeholder="상품명을 입력해주세요">
     </div>
-    <p th:if="${#fields.hasErrors('itemNm')}" th:errors="*{itemName}" class="fieldError">Incorrect data</p>
+    <p th:if="${#fields.hasErrors('itemName')}" th:errors="*{itemName}" class="fieldError">Incorrect data</p>
 
     <div class="input-group">
       <div class="input-group-prepend">
@@ -82,6 +82,7 @@
       </div>
       <input type="number" th:field="*{price}" class="form-control" placeholder="상품의 가격을 입력해주세요">
     </div>
+
     <p th:if="${#fields.hasErrors('price')}" th:errors="*{price}" class="fieldError">Incorrect data</p>
 
     <div class="input-group">
@@ -100,7 +101,7 @@
     </div>
     <p th:if="${#fields.hasErrors('itemDetail')}" th:errors="*{itemDetail}" class="fieldError">Incorrect data</p>
 
-    <div th:if="${#lists.isEmpty(itemFormDto.itemImgDtoList)}">
+    <div th:if="${#lists.isEmpty(itemFormDto.itemImageDtoList)}">
       <div class="form-group" th:each="num: ${#numbers.sequence(1,5)}">
         <div class="custom-file img-div">
           <input type="file" class="custom-file-input" name="itemImgFile">
@@ -109,8 +110,8 @@
       </div>
     </div>
 
-    <div th:if = "${not #lists.isEmpty(itemFormDto.itemImgDtoList)}">
-      <div class="form-group" th:each="itemImgDto, status: ${itemFormDto.itemImgDtoList}">
+    <div th:if = "${not #lists.isEmpty(itemFormDto.itemImageDtoList)}">
+      <div class="form-group" th:each="itemImgDto, status: ${itemFormDto.itemImageDtoList}">
         <div class="custom-file img-div">
           <input type="file" class="custom-file-input" name="itemImgFile">
           <input type="hidden" name="itemImgIds" th:value="${itemImgDto.id}">
