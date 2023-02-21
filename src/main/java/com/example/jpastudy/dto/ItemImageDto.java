@@ -1,6 +1,6 @@
 package com.example.jpastudy.dto;
 
-import com.example.jpastudy.entity.ItemImg;
+import com.example.jpastudy.entity.ItemImage;
 import lombok.Getter;
 import lombok.Setter;
 import org.modelmapper.ModelMapper;
@@ -16,7 +16,7 @@ public class ItemImageDto {
 
     private static ModelMapper modelMapper = new ModelMapper();
 
-    public static ItemImageDto of(ItemImg itemImg){
-        return modelMapper.map(itemImg, ItemImageDto.class);
+    public static ItemImageDto of(ItemImage itemImage){
+        return modelMapper.map(itemImage, ItemImageDto.class);
     }
 }
