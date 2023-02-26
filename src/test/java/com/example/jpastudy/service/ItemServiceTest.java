@@ -25,7 +25,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
 @Transactional
-//@TestPropertySource(locations = "classpath:application-test.properties")
+@TestPropertySource(locations = "classpath:application-test.properties")
 public class ItemServiceTest {
     @Autowired
     ItemService itemService;
@@ -63,7 +63,7 @@ public class ItemServiceTest {
         List<MultipartFile> multipartFileList = createMultipartFiles();
         Long itemId= itemService.saveItem(itemFormDto, multipartFileList);
 
-        List<ItemImage> itemImageList= itemImageRepository.findByItemOrderByIdAsc(itemId);
+        List<ItemImage> itemImageList= itemImageRepository.findByItemId(itemId);
 
         Item item=itemRepository.findById(itemId)
                 .orElseThrow(EntityNotFoundException::new);
