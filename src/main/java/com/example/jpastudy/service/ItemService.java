@@ -18,7 +18,6 @@ import java.util.List;
 public class ItemService {
     private final ItemRepository itemRepository;
     private final ItemImageService itemImageService;
-    private final ItemImageRepository itemImageRepository;
 
     public Long saveItem(ItemFormDto itemFormDto, List<MultipartFile> itemImageFileList) throws Exception{
         // 1. 상품 저장
