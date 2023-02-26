@@ -18,26 +18,27 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ItemController {
     private final ItemService itemService;
-    @GetMapping(value="/admin/item/new")
-    public String itemForm(Model model){
-        model.addAttribute("itemFormDto",new ItemFormDto());
+
+    @GetMapping(value = "/admin/item/new")
+    public String itemForm(Model model) {
+        model.addAttribute("itemFormDto", new ItemFormDto());
         return "/item/itemForm";
     }
 
-    @PostMapping(value="/admin/item/new")
+    @PostMapping(value = "/admin/item/new")
     public String itemNew(@Valid ItemFormDto itemFormDto, BindingResult bindingResult, Model model,
-                          @RequestParam("itemImageFile")List<MultipartFile> itemImageFileList){
-        if(bindingResult.hasErrors())
+                          @RequestParam("itemImageFile") List<MultipartFile> itemImageFileList) {
+        if (bindingResult.hasErrors())
             return "item/itemForm";
 
-        if(itemImageFileList.get(0).isEmpty() && itemFormDto.getId()==null){
-            model.addAttribute("errorMessage","첫번째 상품 이미지는 필수 입력값입니다.");
+        if (itemImageFileList.get(0).isEmpty() && itemFormDto.getId() == null) {
+            model.addAttribute("errorMessage", "첫번째 상품 이미지는 필수 입력값입니다.");
             return "item/itemForm";
         }
 
-        try{
+        try {
             itemService.saveItem(itemFormDto, itemImageFileList);
-        }catch(Exception e){
+        } catch (Exception e) {
             model.addAttribute("errorMessage", "상품 등록 중 에러가 발생하였습니다.");
             return "item/itemForm";
         }
