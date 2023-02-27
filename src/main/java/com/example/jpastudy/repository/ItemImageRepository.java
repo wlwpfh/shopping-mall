@@ -7,5 +7,5 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface ItemImageRepository extends JpaRepository<ItemImage, Long> {
-    List<ItemImage> findByItemId(@Param("id") Long itemId);
+    List<ItemImage> findByItemIdOrderByItemIdAsc(@Param("id") Long itemId);
 }
