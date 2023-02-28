@@ -63,8 +63,8 @@ public class ItemService {
         return itemFormDto;
     }
 
-    public Long updateItem(ItemFormDto itemFormDto, List<MultipartFile> itemImageList) throws Exception{
-        Item item=itemRepository.findById(itemFormDto.getId())
+    public Long updateItem(Long itemId, ItemFormDto itemFormDto, List<MultipartFile> itemImageList) throws Exception{
+        Item item=itemRepository.findById(itemId)
                 .orElseThrow(EntityNotFoundException::new);
         item.updateItem(itemFormDto);
 
