@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.thymeleaf.util.StringUtils;
 
+import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import java.io.File;
 
@@ -34,5 +35,20 @@ public class ItemImageService {
 
         itemImage.updateItemImg(originalImageName, imageName, imageUrl);
         itemImageRepository.save(itemImage);
+    }
+
+    public void updateItemImage(Long itemId, MultipartFile itemImageFile) throws Exception{
+        if(!itemImageFile.isEmpty()){
+            ItemImage savedItemImage= itemImageRepository.findById(itemId)
+                    .orElseThrow(EntityNotFoundException::new);
+            if(!StringUtils.isEmpty(savedItemImage.getImageName())){
+                fileService.deleteFile(itemImageLocation+"/"+savedItemImage.getImageName());
+            }
+            String originalName=itemImageFile.getOriginalFilename();
+            String imageName=fileService.uploadFile(itemImageLocation, originalName, itemImageFile.getBytes());
+            String imageUrl= "/images/item/"+imageName;
+            savedItemImage.updateItemImg(originalName, imageName, imageUrl);
+        }
+
     }
 }
