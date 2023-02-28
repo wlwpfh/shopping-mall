@@ -63,15 +63,15 @@ public class ItemService {
         return itemFormDto;
     }
 
-    public Long updateItem(Long itemId, ItemFormDto itemFormDto, List<MultipartFile> itemImageList) throws Exception{
-        Item item=itemRepository.findById(itemId)
+    public Long updateItem(ItemFormDto itemFormDto, List<MultipartFile> itemImageList) throws Exception{
+        Item item=itemRepository.findById(itemFormDto.getId())
                 .orElseThrow(EntityNotFoundException::new);
         item.updateItem(itemFormDto);
 
         List<Long> itemImageIds=itemFormDto.getItemImageIds();
 
         for(int i=0;i<itemImageList.size();i++){
-            itemImageService.updateItemImage(itemImageIds.get(i), itemImageList.get(i));
+            itemImageService.updateItemImage(itemFormDto.getId(), itemImageList.get(i));
         }
         return item.getId();
     }
