@@ -1,6 +1,7 @@
 package com.example.jpastudy.entity;
 
 import com.example.jpastudy.constant.ItemSellStatus;
+import com.example.jpastudy.dto.ItemFormDto;
 import com.fasterxml.jackson.databind.ser.Serializers;
 import lombok.Getter;
 import lombok.Setter;
@@ -44,4 +45,12 @@ public class Item extends BaseEntity {
             inverseJoinColumns = @JoinColumn(name="item_id")
     )
     private List<Member> members;
+
+    public void updateItem(ItemFormDto itemFormDto){
+        this.itemName=itemFormDto.getItemName();
+        this.price=itemFormDto.getPrice();
+        this.stockNumber=itemFormDto.getStockNumber();
+        this.itemDetail=itemFormDto.getItemDetail();
+        this.itemSellStatus=itemFormDto.getItemSellStatus();
+    }
 }
