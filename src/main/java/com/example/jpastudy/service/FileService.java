@@ -25,7 +25,7 @@ public class FileService {
         File deleteFile= new File(filePath);
 
         if(deleteFile.exists()){
-            deleteFile.delete();
+            deleteFile.deleteOnExit();
             log.info("파일을 삭제하였습니다.");
         }else
             log.info("파일이 존재하지 않습니다.");

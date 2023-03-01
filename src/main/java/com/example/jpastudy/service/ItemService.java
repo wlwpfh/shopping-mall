@@ -6,6 +6,7 @@ import com.example.jpastudy.entity.Item;
 import com.example.jpastudy.entity.ItemImage;
 import com.example.jpastudy.repository.ItemImageRepository;
 import com.example.jpastudy.repository.ItemRepository;
+import groovy.util.logging.Log;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -71,7 +72,7 @@ public class ItemService {
         List<Long> itemImageIds=itemFormDto.getItemImageIds();
 
         for(int i=0;i<itemImageList.size();i++){
-            itemImageService.updateItemImage(itemFormDto.getId(), itemImageList.get(i));
+            itemImageService.updateItemImage(itemImageIds.get(i), itemImageList.get(i));
         }
         return item.getId();
     }

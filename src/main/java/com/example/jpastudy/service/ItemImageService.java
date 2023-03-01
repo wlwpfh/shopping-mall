@@ -37,9 +37,9 @@ public class ItemImageService {
         itemImageRepository.save(itemImage);
     }
 
-    public void updateItemImage(Long itemId, MultipartFile itemImageFile) throws Exception{
+    public void updateItemImage(Long itemImageId, MultipartFile itemImageFile) throws Exception{
         if(!itemImageFile.isEmpty()){
-            ItemImage savedItemImage= itemImageRepository.findById(itemId)
+            ItemImage savedItemImage= itemImageRepository.findById(itemImageId)
                     .orElseThrow(EntityNotFoundException::new);
             if(!StringUtils.isEmpty(savedItemImage.getImageName())){
                 fileService.deleteFile(itemImageLocation+"/"+savedItemImage.getImageName());
