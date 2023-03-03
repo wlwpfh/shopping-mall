@@ -4,14 +4,18 @@ import com.example.jpastudy.constant.ItemSellStatus;
 import com.example.jpastudy.dto.ItemSearchDto;
 import com.example.jpastudy.entity.Item;
 import com.example.jpastudy.entity.QItem;
+import com.querydsl.core.QueryResults;
 import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.core.types.dsl.Wildcard;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.thymeleaf.util.StringUtils;
 
 import javax.persistence.EntityManager;
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class ItemRepositoryCustomImpl implements ItemRepositoryCustom{
 
@@ -51,6 +55,21 @@ public class ItemRepositoryCustomImpl implements ItemRepositoryCustom{
 
     @Override
     public Page<Item> getAdminItemPage(ItemSearchDto itemSearchDto, Pageable pageable) {
-        return null;
+        List<Item> results= queryFactory.selectFrom(QItem.item)
+                .where(registerDateAfter(itemSearchDto.getSearchDateType()),
+                        searchSellStatusEq(itemSearchDto.getItemSellStatus()),
+                        searchByLike(itemSearchDto.getSearchBy(), itemSearchDto.getSearchQuery()))
+                .orderBy(QItem.item.id.desc())
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .fetch();
+
+        long total=queryFactory.select(Wildcard.count).from(QItem.item)
+                .where(registerDateAfter(itemSearchDto.getSearchDateType()),
+                        searchSellStatusEq(itemSearchDto.getItemSellStatus()),
+                        searchByLike(itemSearchDto.getSearchBy(), itemSearchDto.getSearchQuery()))
+                .fetchOne();
+
+        return new PageImpl<>(results, pageable, total);
     }
 }
