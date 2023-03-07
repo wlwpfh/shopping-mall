@@ -57,7 +57,7 @@ public class ItemRepositoryCustomImpl implements ItemRepositoryCustom{
     public Page<Item> getAdminItemPage(ItemSearchDto itemSearchDto, Pageable pageable) {
         List<Item> results= queryFactory.selectFrom(QItem.item)
                 .where(registerDateAfter(itemSearchDto.getSearchDateType()),
-                        searchSellStatusEq(itemSearchDto.getItemSellStatus()),
+                        searchSellStatusEq(itemSearchDto.getSearchSellStatus()),
                         searchByLike(itemSearchDto.getSearchBy(), itemSearchDto.getSearchQuery()))
                 .orderBy(QItem.item.id.desc())
                 .offset(pageable.getOffset())
@@ -66,7 +66,7 @@ public class ItemRepositoryCustomImpl implements ItemRepositoryCustom{
 
         long total=queryFactory.select(Wildcard.count).from(QItem.item)
                 .where(registerDateAfter(itemSearchDto.getSearchDateType()),
-                        searchSellStatusEq(itemSearchDto.getItemSellStatus()),
+                        searchSellStatusEq(itemSearchDto.getSearchSellStatus()),
                         searchByLike(itemSearchDto.getSearchBy(), itemSearchDto.getSearchQuery()))
                 .fetchOne();
 
