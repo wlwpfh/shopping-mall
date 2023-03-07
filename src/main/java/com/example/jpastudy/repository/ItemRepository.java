@@ -3,11 +3,12 @@ package com.example.jpastudy.repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import com.example.jpastudy.entity.Item;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
-public interface ItemRepository extends JpaRepository<Item, Long> {
+public interface ItemRepository extends JpaRepository<Item, Long>, QuerydslPredicateExecutor<Item>, ItemRepositoryCustom {
     //JpaRepository에서 제공하는 메소드
     //1. save - 엔티티 저장 및 수정
     //2. delete - 엔티티 삭제
