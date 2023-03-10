@@ -3,12 +3,14 @@ package com.example.jpastudy.service;
 import com.example.jpastudy.dto.ItemFormDto;
 import com.example.jpastudy.dto.ItemImageDto;
 import com.example.jpastudy.dto.ItemSearchDto;
+import com.example.jpastudy.dto.MainItemDto;
 import com.example.jpastudy.entity.Item;
 import com.example.jpastudy.entity.ItemImage;
 import com.example.jpastudy.repository.ItemImageRepository;
 import com.example.jpastudy.repository.ItemRepository;
 import groovy.util.logging.Log;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.cache.spi.support.AbstractReadWriteAccess;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -83,5 +85,10 @@ public class ItemService {
     @Transactional(readOnly = true)
     public Page<Item> getAdminItemPage(ItemSearchDto itemSearchDto, Pageable pageable){
         return itemRepository.getAdminItemPage(itemSearchDto, pageable);
+    }
+
+    @Transactional(readOnly=true)
+    public Page<MainItemDto> getMainItemPage(ItemSearchDto itemSearchDto, Pageable pageable){
+        return itemRepository.getMainItemPage(itemSearchDto, pageable);
     }
 }
