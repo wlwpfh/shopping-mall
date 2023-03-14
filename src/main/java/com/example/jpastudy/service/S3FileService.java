@@ -1,6 +1,8 @@
 package com.example.jpastudy.service;
 
+import com.amazonaws.AmazonClientException;
 import com.amazonaws.services.s3.AmazonS3Client;
+import com.amazonaws.services.s3.model.DeleteObjectRequest;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import lombok.RequiredArgsConstructor;
@@ -51,5 +53,12 @@ public class S3FileService {
     // 파일 확장자 가져오기 
     private String getFileExtension(String fileName){
         return fileName.substring(fileName.indexOf('.'));
+    }
+
+
+    //파일 삭제하기
+    public void deleteFile(String file){
+        DeleteObjectRequest deleteObjectRequest=new DeleteObjectRequest(bucket, file);
+        amazonS3Client.deleteObject(deleteObjectRequest);
     }
 }
