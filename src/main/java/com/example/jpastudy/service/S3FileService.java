@@ -1,6 +1,7 @@
 package com.example.jpastudy.service;
 
 import com.amazonaws.AmazonClientException;
+import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.DeleteObjectRequest;
 import com.amazonaws.services.s3.model.ObjectMetadata;
@@ -24,16 +25,17 @@ public class S3FileService {
     private final AmazonS3Client amazonS3Client;
 
     // S3에 파일 업로드
-    public void uploadFile(MultipartFile multipartFile, String fileName) throws IOException {
+    public String uploadFile(MultipartFile multipartFile, String fileName) throws IOException {
         ObjectMetadata objectMetadata=createObjectMetaData(multipartFile);
+        String newFileName=createFileName(fileName);
         try(InputStream inputStream = multipartFile.getInputStream()){
             amazonS3Client.putObject(
-                    new PutObjectRequest(bucket, fileName, inputStream, objectMetadata)
+                    new PutObjectRequest(bucket, newFileName, inputStream, objectMetadata)
                 );
         }catch (IOException e){
             throw new IOException(String.format("스트림을 가져오는 과정에서 에러가 발생하였습니다."));
         }
-
+        return amazonS3Client.getUrl(bucket, newFileName).toString();
     }
 
     // ObjectMetaData 생성
