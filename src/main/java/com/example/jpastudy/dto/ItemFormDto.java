@@ -30,10 +30,6 @@ public class ItemFormDto {
 
     private ItemSellStatus itemSellStatus;
 
-    private List<ItemImageDto> itemImageDtoList=new ArrayList<>();
-
-    private List<Long> itemImageIds=new ArrayList<>();
-
     private static ModelMapper modelMapper=new ModelMapper();
 
     public Item createItem(){

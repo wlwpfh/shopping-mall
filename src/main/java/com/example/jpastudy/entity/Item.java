@@ -35,6 +35,8 @@ public class Item extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private ItemSellStatus itemSellStatus; // 상품 판매 상태
 
+    private String imageUrl;
+
     public void updateItem(ItemFormDto itemFormDto) {
         this.itemName = itemFormDto.getItemName();
         this.price = itemFormDto.getPrice();
