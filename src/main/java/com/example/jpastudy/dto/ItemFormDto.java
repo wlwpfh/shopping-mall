@@ -29,6 +29,7 @@ public class ItemFormDto {
     private Integer stockNumber;
 
     private ItemSellStatus itemSellStatus;
+    private String imageUrl;
 
     private static ModelMapper modelMapper=new ModelMapper();
 
