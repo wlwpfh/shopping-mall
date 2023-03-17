@@ -61,7 +61,7 @@ public class ItemController {
             model.addAttribute("itemFormDto", new ItemFormDto());
             return "item/itemForm";
         }
-        return "item/itemForm";
+        return "item/itemDetail";
     }
 
     @PostMapping(value = "/admin/item/{itemId}")
@@ -97,7 +97,7 @@ public class ItemController {
         return "item/itemManage";
     }
 
-    @GetMapping(value="/items/{itemId}")
+    @GetMapping(value="/item/{itemId}")
     public String itemDetail(Model model, @PathVariable("itemId") Long itemId){
         ItemFormDto itemFormDto= itemService.getItemDetail(itemId);
         model.addAttribute("item", itemFormDto);
