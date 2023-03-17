@@ -6,8 +6,6 @@ import com.example.jpastudy.dto.MainItemDto;
 import com.example.jpastudy.dto.QMainItemDto;
 import com.example.jpastudy.entity.Item;
 import com.example.jpastudy.entity.QItem;
-import com.example.jpastudy.entity.QItemImage;
-import com.querydsl.core.QueryResults;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.Wildcard;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -20,45 +18,45 @@ import javax.persistence.EntityManager;
 import java.time.LocalDateTime;
 import java.util.List;
 
-public class ItemRepositoryCustomImpl implements ItemRepositoryCustom{
+public class ItemRepositoryCustomImpl implements ItemRepositoryCustom {
 
     private JPAQueryFactory queryFactory;
 
-    public ItemRepositoryCustomImpl(EntityManager entityManager){
-        this.queryFactory=new JPAQueryFactory(entityManager);
+    public ItemRepositoryCustomImpl(EntityManager entityManager) {
+        this.queryFactory = new JPAQueryFactory(entityManager);
     }
 
-    private BooleanExpression searchSellStatusEq(ItemSellStatus searchSellStatus){
-        return searchSellStatus== null? null: QItem.item.itemSellStatus.eq(searchSellStatus);
+    private BooleanExpression searchSellStatusEq(ItemSellStatus searchSellStatus) {
+        return searchSellStatus == null ? null : QItem.item.itemSellStatus.eq(searchSellStatus);
     }
 
-    private BooleanExpression registerDateAfter(String searchDateType){
-        LocalDateTime dateTime= LocalDateTime.now();
-        if(StringUtils.equals("all", searchDateType) || searchDateType==null)
+    private BooleanExpression registerDateAfter(String searchDateType) {
+        LocalDateTime dateTime = LocalDateTime.now();
+        if (StringUtils.equals("all", searchDateType) || searchDateType == null)
             return null;
-        else if(StringUtils.equals("1d", searchDateType))
-            dateTime= dateTime.minusDays(1);
-        else if(StringUtils.equals("1w", searchDateType))
-            dateTime= dateTime.minusWeeks(1);
-        else if(StringUtils.equals("1m", searchDateType))
-            dateTime= dateTime.minusMonths(1);
-        else if(StringUtils.equals("6m", searchDateType))
-            dateTime= dateTime.minusMonths(6);
+        else if (StringUtils.equals("1d", searchDateType))
+            dateTime = dateTime.minusDays(1);
+        else if (StringUtils.equals("1w", searchDateType))
+            dateTime = dateTime.minusWeeks(1);
+        else if (StringUtils.equals("1m", searchDateType))
+            dateTime = dateTime.minusMonths(1);
+        else if (StringUtils.equals("6m", searchDateType))
+            dateTime = dateTime.minusMonths(6);
 
         return QItem.item.regTime.after(dateTime);
     }
 
-    private BooleanExpression searchByLike(String searchBy, String searchQuery){
-        if(StringUtils.equals("itemName", searchBy))
-            return QItem.item.itemName.like("%"+searchQuery+"%");
-        if(StringUtils.equals("createdBy", searchBy))
-            return QItem.item.createdBy.like("%"+searchQuery+"%");
+    private BooleanExpression searchByLike(String searchBy, String searchQuery) {
+        if (StringUtils.equals("itemName", searchBy))
+            return QItem.item.itemName.like("%" + searchQuery + "%");
+        if (StringUtils.equals("createdBy", searchBy))
+            return QItem.item.createdBy.like("%" + searchQuery + "%");
         return null;
     }
 
     @Override
     public Page<Item> getAdminItemPage(ItemSearchDto itemSearchDto, Pageable pageable) {
-        List<Item> results= queryFactory.selectFrom(QItem.item)
+        List<Item> results = queryFactory.selectFrom(QItem.item)
                 .where(registerDateAfter(itemSearchDto.getSearchDateType()),
                         searchSellStatusEq(itemSearchDto.getSearchSellStatus()),
                         searchByLike(itemSearchDto.getSearchBy(), itemSearchDto.getSearchQuery()))
@@ -67,7 +65,7 @@ public class ItemRepositoryCustomImpl implements ItemRepositoryCustom{
                 .limit(pageable.getPageSize())
                 .fetch();
 
-        long total=queryFactory.select(Wildcard.count).from(QItem.item)
+        long total = queryFactory.select(Wildcard.count).from(QItem.item)
                 .where(registerDateAfter(itemSearchDto.getSearchDateType()),
                         searchSellStatusEq(itemSearchDto.getSearchSellStatus()),
                         searchByLike(itemSearchDto.getSearchBy(), itemSearchDto.getSearchQuery()))
@@ -75,24 +73,24 @@ public class ItemRepositoryCustomImpl implements ItemRepositoryCustom{
 
         return new PageImpl<>(results, pageable, total);
     }
-    private BooleanExpression itemNameLike(String searchQuery){
-        return StringUtils.isEmpty(searchQuery) ? null : QItem.item.itemName.like("%"+searchQuery+"%");
+
+    private BooleanExpression itemNameLike(String searchQuery) {
+        return StringUtils.isEmpty(searchQuery) ? null : QItem.item.itemName.like("%" + searchQuery + "%");
     }
+
     @Override
     public Page<MainItemDto> getMainItemPage(ItemSearchDto itemSearchDto, Pageable pageable) {
-        QItem item= QItem.item;
-        QItemImage itemImage= QItemImage.itemImage;
+        QItem item = QItem.item;
 
         List<MainItemDto> results = queryFactory.select(
-                new QMainItemDto(
-                        item.id,
-                        item.itemName,
-                        item.itemDetail,
-                        itemImage.imageUrl,
-                        item.price
-                )
-        ).from(itemImage).join(itemImage.item, item)
-                .where(itemImage.repImgYn.eq("Y"))
+                        new QMainItemDto(
+                                item.id,
+                                item.itemName,
+                                item.itemDetail,
+                                item.imageUrl,
+                                item.price
+                        )
+                ).from(item)
                 .where(itemNameLike(itemSearchDto.getSearchQuery()))
                 .orderBy(item.id.desc())
                 .offset(pageable.getOffset())
@@ -100,10 +98,8 @@ public class ItemRepositoryCustomImpl implements ItemRepositoryCustom{
                 .fetch();
 
 
-        long total= queryFactory.select(Wildcard.count)
-                .from(itemImage)
-                .join(itemImage.item, item)
-                .where(itemImage.repImgYn.eq("Y"))
+        long total = queryFactory.select(Wildcard.count)
+                .from(item)
                 .where(itemNameLike(itemSearchDto.getSearchQuery()))
                 .fetchOne();
 

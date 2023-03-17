@@ -13,7 +13,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.EntityNotFoundException;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -21,13 +20,12 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ItemService {
     private final ItemRepository itemRepository;
-    private final ItemImageService itemImageService;
     private final S3FileService fileService;
 
     public Long saveItem(ItemFormDto itemFormDto, MultipartFile file) throws Exception {
         // 1. 상품 저장
         Item item = itemFormDto.createItem();
-        String imageUrl=fileService.uploadFile(file, file.getOriginalFilename());
+        String imageUrl = fileService.uploadFile(file, file.getOriginalFilename());
         // 2. 이미지 등록
         item.setImageUrl(imageUrl);
         itemRepository.save(item);
@@ -35,18 +33,18 @@ public class ItemService {
     }
 
     @Transactional(readOnly = true)
-    public ItemFormDto getItemDetail(Long itemId){
+    public ItemFormDto getItemDetail(Long itemId) {
 
-        Item item= itemRepository.findById(itemId)
+        Item item = itemRepository.findById(itemId)
                 .orElseThrow(EntityNotFoundException::new);
 
-        ItemFormDto itemFormDto=ItemFormDto.of(item);
+        ItemFormDto itemFormDto = ItemFormDto.of(item);
 
         return itemFormDto;
     }
 
-    public Long updateItem(ItemFormDto itemFormDto, List<MultipartFile> itemImageList) throws Exception{
-        Item item=itemRepository.findById(itemFormDto.getId())
+    public Long updateItem(ItemFormDto itemFormDto, List<MultipartFile> itemImageList) throws Exception {
+        Item item = itemRepository.findById(itemFormDto.getId())
                 .orElseThrow(EntityNotFoundException::new);
         item.updateItem(itemFormDto);
 
@@ -54,12 +52,12 @@ public class ItemService {
     }
 
     @Transactional(readOnly = true)
-    public Page<Item> getAdminItemPage(ItemSearchDto itemSearchDto, Pageable pageable){
+    public Page<Item> getAdminItemPage(ItemSearchDto itemSearchDto, Pageable pageable) {
         return itemRepository.getAdminItemPage(itemSearchDto, pageable);
     }
 
-    @Transactional(readOnly=true)
-    public Page<MainItemDto> getMainItemPage(ItemSearchDto itemSearchDto, Pageable pageable){
+    @Transactional(readOnly = true)
+    public Page<MainItemDto> getMainItemPage(ItemSearchDto itemSearchDto, Pageable pageable) {
         return itemRepository.getMainItemPage(itemSearchDto, pageable);
     }
 }
