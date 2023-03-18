@@ -2,6 +2,7 @@ package com.example.jpastudy.entity;
 
 import com.example.jpastudy.constant.ItemSellStatus;
 import com.example.jpastudy.dto.ItemFormDto;
+import com.example.jpastudy.exception.OutOfStockException;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -44,5 +45,12 @@ public class Item extends BaseEntity {
         this.itemDetail = itemFormDto.getItemDetail();
         this.itemSellStatus = itemFormDto.getItemSellStatus();
         this.imageUrl=itemFormDto.getImageUrl();
+    }
+
+    public void removeStock(int stockNumber){
+        int restStock=this.stockNumber-stockNumber;
+        if(restStock<0)
+            throw new OutOfStockException("상품의 재고가 부족합니다. (현재 수량:"+this.stockNumber+")");
+        this.stockNumber=restStock;
     }
 }
