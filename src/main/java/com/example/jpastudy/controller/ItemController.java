@@ -58,25 +58,24 @@ public class ItemController {
             model.addAttribute("itemFormDto", itemFormDto);
         }catch(EntityNotFoundException e){
             model.addAttribute("errorMessage","존재하지 않는 상품입니다.");
-            model.addAttribute("itemFormDto", new ItemFormDto());
             return "item/itemForm";
         }
-        return "item/itemDetail";
+        return "item/itemForm";
     }
 
     @PostMapping(value = "/admin/item/{itemId}")
-    public String itemUpdate(@Valid ItemFormDto itemFormDto, BindingResult bindingResult, Model model,
-                             @RequestParam("itemImageFile") List<MultipartFile> itemImageFileList) {
+    public String itemUpdate(@PathVariable("itemId") Long itemId, @Valid ItemFormDto itemFormDto, BindingResult bindingResult, Model model,
+                             @RequestParam("itemImageFile") MultipartFile file) {
         if (bindingResult.hasErrors())
             return "item/itemForm";
 
-        if (itemImageFileList.get(0).isEmpty() && itemFormDto.getId() == null) {
-            model.addAttribute("errorMessage", "첫번째 상품 이미지는 필수 입력값입니다.");
+        if (file.isEmpty()) {
+            model.addAttribute("errorMessage", "상품 이미지는 필수 입력값입니다.");
             return "item/itemForm";
         }
 
         try {
-            itemService.updateItem( itemFormDto, itemImageFileList);
+            itemService.updateItem(itemFormDto, file);
         } catch (Exception e) {
             model.addAttribute("errorMessage", "상품 수정 중 에러가 발생하였습니다.");
             return "item/itemForm";

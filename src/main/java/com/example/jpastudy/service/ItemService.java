@@ -43,9 +43,13 @@ public class ItemService {
         return itemFormDto;
     }
 
-    public Long updateItem(ItemFormDto itemFormDto, List<MultipartFile> itemImageList) throws Exception {
+    public Long updateItem(ItemFormDto itemFormDto, MultipartFile file) throws Exception {
         Item item = itemRepository.findById(itemFormDto.getId())
                 .orElseThrow(EntityNotFoundException::new);
+
+        String imageUrl = fileService.uploadFile(file, file.getOriginalFilename());
+
+        itemFormDto.setImageUrl(imageUrl);
         item.updateItem(itemFormDto);
 
         return item.getId();
