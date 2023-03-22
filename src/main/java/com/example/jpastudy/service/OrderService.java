@@ -57,10 +57,9 @@ public class OrderService {
         for(Order order: orders){
             OrderListDto orderListDto=new OrderListDto(order);
             List<OrderItem> orderItems=order.getOrderItems();
-            OrderItem o=orderItemRepository.findById(order.getId()).orElseThrow(EntityNotFoundException::new);
 
             for(OrderItem orderItem: orderItems){
-                OrderItemDto orderItemDto=new OrderItemDto(orderItem, o.getItem().getImageUrl());
+                OrderItemDto orderItemDto=new OrderItemDto(orderItem, orderItem.getItem().getImageUrl());
                 orderListDto.addOrderItemDto(orderItemDto);
             }
             orderListDtos.add(orderListDto);
