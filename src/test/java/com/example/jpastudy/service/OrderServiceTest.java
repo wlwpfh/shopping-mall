@@ -1,12 +1,11 @@
 package com.example.jpastudy.service;
 
 import com.example.jpastudy.constant.ItemSellStatus;
-import com.example.jpastudy.constant.Role;
 import com.example.jpastudy.dto.OrderDto;
 import com.example.jpastudy.entity.Item;
+import com.example.jpastudy.constant.OrderStatus;
 import com.example.jpastudy.entity.Member;
 import com.example.jpastudy.entity.Order;
-import com.example.jpastudy.entity.OrderItem;
 import com.example.jpastudy.repository.ItemRepository;
 import com.example.jpastudy.repository.MemberRepository;
 import com.example.jpastudy.repository.OrderRepository;
@@ -19,7 +18,6 @@ import org.springframework.test.context.TestPropertySource;
 
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
-import java.util.List;
 
 @SpringBootTest
 @Transactional
@@ -37,8 +35,8 @@ public class OrderServiceTest {
     @Autowired
     MemberRepository memberRepository;
 
-    public Item saveItem(){
-        Item item=new Item();
+    public Item saveItem() {
+        Item item = new Item();
         item.setItemName("테스트 아이템");
         item.setPrice(2000);
         item.setItemDetail("테스트 아이템 상품 설명");
@@ -48,8 +46,8 @@ public class OrderServiceTest {
         return itemRepository.save(item);
     }
 
-    public Member saveMember(){
-        Member member=new Member();
+    public Member saveMember() {
+        Member member = new Member();
         member.setName("테스트 사용자");
         member.setEmail("test@test.com");
 
@@ -58,20 +56,41 @@ public class OrderServiceTest {
 
     @Test
     @DisplayName("주문 테스트")
-    public void order(){
-        Item item=saveItem();
-        Member member=saveMember();
+    public void order() {
+        Item item = saveItem();
+        Member member = saveMember();
 
-        OrderDto orderDto=new OrderDto();
+        OrderDto orderDto = new OrderDto();
         orderDto.setCount(10);
         orderDto.setItemId(item.getId());
 
-        Long orderId= orderService.order(orderDto, member.getEmail());
+        Long orderId = orderService.order(orderDto, member.getEmail());
 
-        Order order=orderRepository.findById(orderId).orElseThrow(EntityNotFoundException::new);
+        Order order = orderRepository.findById(orderId).orElseThrow(EntityNotFoundException::new);
 
-        int totalPrice=orderDto.getCount()*item.getPrice();
+        int totalPrice = orderDto.getCount() * item.getPrice();
 
         Assertions.assertEquals(totalPrice, order.getTotalPrice());
+    }
+
+    @Test
+    @DisplayName("주문 취소 테스트")
+    public void cancelOrder() {
+        Item item = saveItem();
+        Member member = saveMember();
+
+        OrderDto orderDto = new OrderDto();
+        orderDto.setCount(10);
+        orderDto.setItemId(item.getId());
+
+        Long orderId = orderService.order(orderDto, member.getEmail());
+
+        Order order = orderRepository.findById(orderId)
+                .orElseThrow(EntityNotFoundException::new);
+
+        orderService.cancelOrder(orderId);
+
+        Assertions.assertEquals(OrderStatus.CANCEL, order.getOrderStatus());
+        Assertions.assertEquals(100, item.getStockNumber());
     }
 }
