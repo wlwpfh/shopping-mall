@@ -24,27 +24,26 @@ public class CartService {
     private final CartRepository cartRepository;
     private final CartItemRepository cartItemRepository;
 
-    public Long addCart(CartItemDto cartItemDto, String email){
-        Item item= itemRepository.findById(cartItemDto.getItemId())
+    public Long addCart(CartItemDto cartItemDto, String email) {
+        Item item = itemRepository.findById(cartItemDto.getItemId())
                 .orElseThrow(EntityNotFoundException::new);
+        Member member = memberRepository.findByEmail(email);
 
-        Member member=memberRepository.findByEmail(email);
-
-        Cart cart=cartRepository.findByMemberId(member.getId());
-
-        if(cart==null){
-            cart=Cart.createCart(member);
+        Cart cart = cartRepository.findByMemberId(member.getId());
+        if(cart == null){
+            cart = Cart.createCart(member);
             cartRepository.save(cart);
         }
-        CartItem saveCartItem=cartItemRepository.findByItemIdAndCartId(cart.getId(), item.getId());
 
-        if(saveCartItem!=null){
-            saveCartItem.addCount(cartItemDto.getCount());
-            return saveCartItem.getId();
+        CartItem savedCartItem = cartItemRepository.findByCartIdAndItemId(cart.getId(), item.getId());
+
+        if(savedCartItem != null){
+            savedCartItem.addCount(cartItemDto.getCount());
+            return savedCartItem.getId();
+        } else {
+            CartItem cartItem = CartItem.createCartItem(cart, item, cartItemDto.getCount());
+            cartItemRepository.save(cartItem);
+            return cartItem.getId();
         }
-        CartItem cartItem=CartItem.createCartItem(cart, item, cartItemDto.getCount());
-        cartItemRepository.save(cartItem);
-
-        return cartItem.getId();
     }
 }
