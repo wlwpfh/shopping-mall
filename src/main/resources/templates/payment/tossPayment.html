@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>결제하기</title>
+  <script src="https://js.tosspayments.com/v1"></script>
+</head>
+<body>
+
+
+<script>
+  var clientKey = 'test_ck_ADpexMgkW3619LgG24b8GbR5ozO0'
+  var tossPayments = TossPayments(clientKey)
+
+  tossPayments.requestPayment('가상계좌', {
+    amount: 15000,
+    orderId: 'Ah6AqkBBNx4cbwohx9s_6',
+    orderName: '토스 티셔츠 외 2건',
+    customerName: '박토스',
+    successUrl: 'http://localhost:8080/success',
+    failUrl: 'http://localhost:8080/fail',
+  })
+</script>
+
+
+</body>
+</html>
