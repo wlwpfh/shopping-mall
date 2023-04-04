@@ -2,6 +2,7 @@ package com.example.jpastudy.controller;
 
 import com.example.jpastudy.dto.CartDetailDto;
 import com.example.jpastudy.dto.CartItemDto;
+import com.example.jpastudy.entity.QCartItem;
 import com.example.jpastudy.service.CartService;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -63,4 +64,15 @@ public class CartController {
 
         return new ResponseEntity(cartItemId, HttpStatus.OK);
     }
+
+    @DeleteMapping(value = "/cartItem/{cartItemId}")
+    public @ResponseBody ResponseEntity deleeteCartItem (@PathVariable("cartItemId") Long cartItemId, Principal principal){
+        if(!cartService.validateCartItem(cartItemId, principal.getName()))
+            return new ResponseEntity("삭제 권한이 없습니다.", HttpStatus.FORBIDDEN);
+
+        cartService.deleteCartItem(cartItemId);
+
+        return new ResponseEntity(cartItemId, HttpStatus.OK);
+    }
+
 }
