@@ -19,7 +19,7 @@ permissions:
 jobs:
   build:
 
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
 
     steps:
     - uses: actions/checkout@v3
@@ -27,9 +27,18 @@ jobs:
       uses: actions/setup-java@v3
       with:
         java-version: '11'
+        distribution: 'temurin'
+        cache: gradle 
         
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
+      
+    - name: Create application.properties
+      working-directory: ./src/main/resources
+      run: |
+        touch application.properties
+        echo "${{ secrets.APPLICATION_PROPERTIES }}" >> application.properties
+        
     
     - name: Build with Gradle
       run: ./gradlew clean build
