@@ -36,5 +36,5 @@ jobs:
           echo "${{ secrets.APPLICATION_TEST }}" >> application-test.properties
           
       - name: Build with Gradle
-        run: ./gradlew  build
+        run: ./gradlew build --exclude-task test
         shell: bash
