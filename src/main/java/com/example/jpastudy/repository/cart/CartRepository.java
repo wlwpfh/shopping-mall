@@ -1,4 +1,4 @@
-package com.example.jpastudy.repository;
+package com.example.jpastudy.repository.cart;
 
 import com.example.jpastudy.entity.Cart;
 import org.springframework.data.jpa.repository.JpaRepository;

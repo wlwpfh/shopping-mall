@@ -1,4 +1,4 @@
-package com.example.jpastudy.repository;
+package com.example.jpastudy.repository.order;
 
 import com.example.jpastudy.entity.Order;
 import com.example.jpastudy.entity.QOrder;

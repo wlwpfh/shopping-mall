@@ -1,4 +1,4 @@
-package com.example.jpastudy.repository;
+package com.example.jpastudy.repository.cart;
 
 import com.example.jpastudy.dto.CartDetailDto;
 import com.example.jpastudy.entity.CartItem;

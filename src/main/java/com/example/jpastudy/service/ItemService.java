@@ -4,7 +4,7 @@ import com.example.jpastudy.dto.ItemFormDto;
 import com.example.jpastudy.dto.ItemSearchDto;
 import com.example.jpastudy.dto.MainItemDto;
 import com.example.jpastudy.entity.Item;
-import com.example.jpastudy.repository.ItemRepository;
+import com.example.jpastudy.repository.item.ItemRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -13,7 +13,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.EntityNotFoundException;
-import java.util.List;
 
 @Service
 @Transactional

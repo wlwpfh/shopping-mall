@@ -1,7 +1,7 @@
 package com.example.jpastudy.service;
 
 import com.example.jpastudy.entity.Member;
-import com.example.jpastudy.repository.MemberRepository;
+import com.example.jpastudy.repository.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;

@@ -1,4 +1,4 @@
-package com.example.jpastudy.repository;
+package com.example.jpastudy.repository.order;
 
 import com.example.jpastudy.entity.OrderItem;
 import org.springframework.data.jpa.repository.JpaRepository;

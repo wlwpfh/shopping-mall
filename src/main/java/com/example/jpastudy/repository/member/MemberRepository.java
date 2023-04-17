@@ -1,4 +1,4 @@
-package com.example.jpastudy.repository;
+package com.example.jpastudy.repository.member;
 
 import com.example.jpastudy.entity.Member;
 import org.springframework.data.jpa.repository.JpaRepository;

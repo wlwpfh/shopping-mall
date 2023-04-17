@@ -1,4 +1,4 @@
-package com.example.jpastudy.repository;
+package com.example.jpastudy.repository.item;
 
 import com.example.jpastudy.dto.ItemSearchDto;
 import com.example.jpastudy.dto.MainItemDto;
