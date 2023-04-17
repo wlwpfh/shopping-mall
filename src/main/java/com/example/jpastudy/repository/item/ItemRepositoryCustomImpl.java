@@ -12,6 +12,8 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.thymeleaf.util.StringUtils;
 
 import javax.persistence.EntityManager;
@@ -105,5 +107,14 @@ public class ItemRepositoryCustomImpl implements ItemRepositoryCustom {
 
 
         return new PageImpl<>(results, pageable, total);
+    }
+
+    public List<Item> findByItemDetail(@Param("itemDetail")String itemDetail){
+        List<Item> result=queryFactory.selectFrom(QItem.item)
+                .where(QItem.item.itemDetail.contains(itemDetail))
+                .orderBy(QItem.item.price.desc())
+                .fetch();
+
+        return result;
     }
 }

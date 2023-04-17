@@ -15,10 +15,10 @@ public interface ItemRepository extends JpaRepository<Item, Long>, QuerydslPredi
     //3. count - 엔티티 총 개수 반환
     //4. findAll - 모든 엔티티 조회
     List<Item> findByItemName(String itemName);
-    List<Item> findByItemNameOrItemDetail(String itemName, String itemDetail);
-    List<Item> findByPriceLessThan(Integer price);
-    List<Item> findByPriceLessThanOrderByPrice(Integer price);
 
-    @Query("select i from Item i where i.itemDetail like %:itemDetail% order by i.price desc")
-    List<Item>  findByItemDetail(@Param("itemDetail")String itemDetail);
+    List<Item> findByItemNameOrItemDetail(String itemName, String itemDetail);
+
+    List<Item> findByPriceLessThan(Integer price);
+
+    List<Item> findByPriceLessThanOrderByPrice(Integer price);
 }
