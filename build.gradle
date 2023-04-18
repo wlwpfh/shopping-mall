@@ -43,10 +43,7 @@ dependencies {
 	implementation group: 'org.modelmapper', name: 'modelmapper', version: '2.3.8'
 	implementation "com.querydsl:querydsl-jpa:${queryDslVersion}"
 	implementation "com.querydsl:querydsl-apt:${queryDslVersion}"
-}
-
-tasks.named('test') {
-	useJUnitPlatform()
+	testImplementation 'io.findify:s3mock_2.13:0.2.6'
 }
 
 def querydslDir = "$buildDir/generated/querydsl"
@@ -69,4 +66,8 @@ configurations {
 		extendsFrom annotationProcessor
 	}
 	querydsl.extendsFrom compileClasspath
+}
+
+test {
+	useJUnitPlatform()
 }
