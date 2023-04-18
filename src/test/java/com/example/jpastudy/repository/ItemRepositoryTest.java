@@ -2,6 +2,7 @@ package com.example.jpastudy.repository;
 
 import com.example.jpastudy.constant.ItemSellStatus;
 import com.example.jpastudy.entity.Item;
+import com.example.jpastudy.repository.item.ItemRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

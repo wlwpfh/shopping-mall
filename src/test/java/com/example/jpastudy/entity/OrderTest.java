@@ -1,10 +1,10 @@
 package com.example.jpastudy.entity;
 
 import com.example.jpastudy.constant.ItemSellStatus;
-import com.example.jpastudy.repository.ItemRepository;
-import com.example.jpastudy.repository.MemberRepository;
-import com.example.jpastudy.repository.OrderItemRepository;
-import com.example.jpastudy.repository.OrderRepository;
+import com.example.jpastudy.repository.item.ItemRepository;
+import com.example.jpastudy.repository.member.MemberRepository;
+import com.example.jpastudy.repository.order.OrderItemRepository;
+import com.example.jpastudy.repository.order.OrderRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

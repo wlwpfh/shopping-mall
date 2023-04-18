@@ -1,6 +1,6 @@
 package com.example.jpastudy.entity;
 
-import com.example.jpastudy.repository.MemberRepository;
+import com.example.jpastudy.repository.member.MemberRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
