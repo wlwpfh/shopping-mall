@@ -16,7 +16,7 @@ import org.springframework.web.client.RestTemplate;
 @Service
 @RequiredArgsConstructor
 @Transactional
-public class KakaoService {
+public class KakaoPayService {
     static final String cid="TC0ONETIME";
 
     @Value("${ADMIN_KEY}")
