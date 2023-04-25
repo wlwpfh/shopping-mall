@@ -3,6 +3,7 @@ package com.example.jpastudy.service;
 import com.example.jpastudy.dto.OrderDto;
 import com.example.jpastudy.dto.OrderItemDto;
 import com.example.jpastudy.dto.OrderListDto;
+import com.example.jpastudy.dto.pay.KakaoReadyResponse;
 import com.example.jpastudy.entity.Member;
 import com.example.jpastudy.entity.Order;
 import com.example.jpastudy.entity.Item;
@@ -34,6 +35,8 @@ public class OrderService {
 
     private final OrderItemRepository orderItemRepository;
 
+    private final KakaoService kakaoService;
+
     public Long order(OrderDto orderDto, String email){
         Item item=itemRepository.findById(orderDto.getItemId())
                 .orElseThrow(EntityNotFoundException::new);
@@ -44,6 +47,9 @@ public class OrderService {
         orderItemList.add(orderItem);
 
         Order order=Order.createOrder(member, orderItemList);
+
+        KakaoReadyResponse kakaoReadyResponse=kakaoService.kakaoPayReady(order, email);
+        System.out.println("카카오 response:"+kakaoReadyResponse.toString());
         orderRepository.save(order);
 
         return order.getId();
