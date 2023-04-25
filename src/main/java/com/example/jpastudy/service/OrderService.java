@@ -50,6 +50,10 @@ public class OrderService {
 
         KakaoReadyResponse kakaoReadyResponse= kakaoPayService.kakaoPayReady(order, email);
         System.out.println("카카오 response:"+kakaoReadyResponse.toString());
+
+        String pgToken="";
+
+        kakaoPayService.approvePayment(pgToken);
         orderRepository.save(order);
 
         return order.getId();

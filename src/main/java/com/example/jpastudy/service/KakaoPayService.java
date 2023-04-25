@@ -1,6 +1,7 @@
 package com.example.jpastudy.service;
 
 
+import com.example.jpastudy.dto.pay.KakaoApproveResponse;
 import com.example.jpastudy.dto.pay.KakaoReadyResponse;
 import com.example.jpastudy.entity.Order;
 import lombok.RequiredArgsConstructor;
@@ -62,5 +63,25 @@ public class KakaoPayService {
         httpHeaders.set("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
 
         return httpHeaders;
+    }
+
+    public KakaoApproveResponse approvePayment(String pgToken){
+        MultiValueMap<String, String> parameters=new LinkedMultiValueMap<>();
+        parameters.add("cid", cid);
+        parameters.add("tid", kakaoReadyResponse.getTid());
+        parameters.add("partner_order_id", "가맹점 주문 번호");
+        parameters.add("partner_user_id", "가맹점 회원 ID");
+        parameters.add("pg_token", pgToken);
+
+        RestTemplate restTemplate=new RestTemplate();
+
+        HttpEntity<MultiValueMap<String, String>> requestEntity=new HttpEntity<>(parameters, this.getHeaders());
+
+        KakaoApproveResponse response=restTemplate.postForObject(
+                "https://kapi.kakao.com/v1/payment/approve",
+                requestEntity,
+                KakaoApproveResponse.class
+        );
+        return response;
     }
 }
