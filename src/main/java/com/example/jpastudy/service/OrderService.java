@@ -37,7 +37,7 @@ public class OrderService {
 
     private final KakaoPayService kakaoPayService;
 
-    public Long order(OrderDto orderDto, String email){
+    public String order(OrderDto orderDto, String email){
         Item item=itemRepository.findById(orderDto.getItemId())
                 .orElseThrow(EntityNotFoundException::new);
         Member member=memberRepository.findByEmail(email);
@@ -49,13 +49,12 @@ public class OrderService {
         Order order=Order.createOrder(member, orderItemList);
 
         KakaoReadyResponse kakaoReadyResponse= kakaoPayService.kakaoPayReady(order, email);
-        System.out.println("카카오 response:"+kakaoReadyResponse.toString());
 
-        String pgToken="";
+        return kakaoReadyResponse.getNext_redirect_pc_url();
+    }
 
-        kakaoPayService.approvePayment(pgToken);
+    Long orderComplete(Order order ,String email){
         orderRepository.save(order);
-
         return order.getId();
     }
 
