@@ -48,13 +48,10 @@ public class OrderService {
 
         Order order=Order.createOrder(member, orderItemList);
 
-        KakaoReadyResponse kakaoReadyResponse= kakaoPayService.kakaoPayReady(order, email);
+        //KakaoReadyResponse kakaoReadyResponse= kakaoPayService.kakaoPayReady(order, email);
 
-        return order.getId();
-    }
-
-    Long orderComplete(Order order ,String email){
         orderRepository.save(order);
+
         return order.getId();
     }
 
