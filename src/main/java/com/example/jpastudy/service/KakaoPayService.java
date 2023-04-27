@@ -28,7 +28,6 @@ public class KakaoPayService {
 
 
     public KakaoReadyResponse kakaoPayReady(Order order, String email){ // 결제 요청
-        System.out.println("카카오페이제발 ~ ");
         MultiValueMap<String, String> parameters=new LinkedMultiValueMap<>();
         parameters.add("cid", cid);
         parameters.add("partner_order_id", "가맹점 주문 번호");
@@ -51,7 +50,6 @@ public class KakaoPayService {
                     requestEntity,
                     KakaoReadyResponse.class
         );
-        System.out.println("끝 ~ response:"+kakaoReadyResponse);
         return kakaoReadyResponse;
     }
 
