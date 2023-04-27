@@ -41,14 +41,13 @@ public class OrderController {
             return new ResponseEntity<String>(stringBuilder.toString(), HttpStatus.BAD_REQUEST);
         }
         String email = principal.getName();
-        String redirectUrl = "https://google.com";
-
+        Long orderId;
         try {
-            redirectUrl = orderService.order(orderDto, email);
+             orderId = orderService.order(orderDto, email);
         } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity("주문이 완려되었습니다.", HttpStatus.OK);
+        return new ResponseEntity("주문이 완료되었습니다.", HttpStatus.OK);
     }
 
     @GetMapping(value = {"/orders", "/orders/{page}"})
