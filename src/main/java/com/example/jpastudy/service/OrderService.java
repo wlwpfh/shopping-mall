@@ -3,6 +3,7 @@ package com.example.jpastudy.service;
 import com.example.jpastudy.dto.OrderDto;
 import com.example.jpastudy.dto.OrderItemDto;
 import com.example.jpastudy.dto.OrderListDto;
+import com.example.jpastudy.dto.pay.KakaoApproveResponse;
 import com.example.jpastudy.dto.pay.KakaoReadyResponse;
 import com.example.jpastudy.entity.Member;
 import com.example.jpastudy.entity.Order;
@@ -61,6 +62,11 @@ public class OrderService {
 
         KakaoReadyResponse response=kakaoPayService.kakaoPayReady(order, email);
         return response.getNext_redirect_pc_url();
+    }
+
+    public KakaoApproveResponse completeOrderByPay(String pgToken){
+        KakaoApproveResponse response= kakaoPayService.approvePayment(pgToken);
+        return response;
     }
 
     @Transactional(readOnly = true)

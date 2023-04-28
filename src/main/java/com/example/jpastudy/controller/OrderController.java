@@ -28,8 +28,6 @@ import java.util.Optional;
 public class OrderController {
     private final OrderService orderService;
 
-    private final KakaoPayService kakaoPayService;
-
     @PostMapping(value = "/order")
     public ResponseEntity order(@RequestBody @Valid OrderDto orderDto, BindingResult bindingResult, Principal principal, Model model) {
         if (bindingResult.hasErrors()) {
@@ -38,7 +36,7 @@ public class OrderController {
             for (FieldError fieldError : fieldErrors) {
                 stringBuilder.append(fieldError.getDefaultMessage());
             }
-            return new ResponseEntity<String>(stringBuilder.toString(), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(stringBuilder.toString(), HttpStatus.BAD_REQUEST);
         }
         String email = principal.getName();
         String redirectUrl;
@@ -72,11 +70,10 @@ public class OrderController {
         return new ResponseEntity(orderId, HttpStatus.OK);
     }
 
-//    @GetMapping("/order/approve")
-//    public ResponseEntity approvePayment(@RequestParam("pg_token") String pgToken) {
-//        KakaoApproveResponse kakaoApproveResponse = kakaoPayService.approvePayment(pgToken);
-//
-//        return new ResponseEntity(kakaoApproveResponse, HttpStatus.OK);
-//    }
+    @GetMapping("/order")
+    public String approvePayment(@RequestParam("pg_token") String pgToken) {
+        KakaoApproveResponse kakaoApproveResponse = orderService.completeOrderByPay(pgToken);
+        return "order/orderHist";
+    }
 
 }
