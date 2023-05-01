@@ -3,6 +3,7 @@ package com.example.jpastudy.controller;
 
 import com.example.jpastudy.dto.OrderDto;
 import com.example.jpastudy.dto.OrderListDto;
+import com.example.jpastudy.dto.pay.KakaoApproveRequest;
 import com.example.jpastudy.dto.pay.KakaoApproveResponse;
 import com.example.jpastudy.service.KakaoPayService;
 import com.example.jpastudy.service.OrderService;
@@ -71,9 +72,9 @@ public class OrderController {
     }
 
     @GetMapping("/order")
-    public String approvePayment(@RequestParam("pg_token") String pgToken) {
-        KakaoApproveResponse kakaoApproveResponse = orderService.completeOrderByPay(pgToken);
-        return "order/orderHist";
+    public ResponseEntity approvePayment(@RequestParam("pg_token") String pgToken, Principal principal) {
+        KakaoApproveResponse kakaoApproveResponse = orderService.completeOrderByPay(pgToken, principal.getName());
+        return new ResponseEntity<>("결제 성공", HttpStatus.OK);
     }
 
 }

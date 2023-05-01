@@ -64,8 +64,8 @@ public class OrderService {
         return response.getNext_redirect_pc_url();
     }
 
-    public KakaoApproveResponse completeOrderByPay(String pgToken){
-        KakaoApproveResponse response= kakaoPayService.approvePayment(pgToken);
+    public KakaoApproveResponse completeOrderByPay(String pgToken, String email){
+        KakaoApproveResponse response= kakaoPayService.approvePayment(pgToken, email);
         return response;
     }
 
