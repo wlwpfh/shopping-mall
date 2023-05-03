@@ -37,9 +37,9 @@ public class KakaoPayService {
         parameters.add("total_amount", String.valueOf(order.getTotalPrice()));
         parameters.add("vat_amount", "1000");
         parameters.add("tax_free_amount", "200");
-        parameters.add("approval_url", "http://localhost:8080/orders");
-        parameters.add("cancel_url","http://localhost:8080/orders");
-        parameters.add("fail_url","http://localhost:8080/orders");
+        parameters.add("approval_url", "http://localhost:8080/order");
+        parameters.add("cancel_url","http://localhost:8080/order");
+        parameters.add("fail_url","http://localhost:8080/order");
 
         HttpEntity<MultiValueMap<String, String>> requestEntity=new HttpEntity<>(parameters, this.getHeaders());
 
@@ -63,12 +63,12 @@ public class KakaoPayService {
         return httpHeaders;
     }
 
-    public KakaoApproveResponse approvePayment(String pgToken){
+    public KakaoApproveResponse approvePayment(String pgToken, String email){
         MultiValueMap<String, String> parameters=new LinkedMultiValueMap<>();
         parameters.add("cid", cid);
         parameters.add("tid", kakaoReadyResponse.getTid());
         parameters.add("partner_order_id", "가맹점 주문 번호");
-        parameters.add("partner_user_id", "가맹점 회원 ID");
+        parameters.add("partner_user_id", email);
         parameters.add("pg_token", pgToken);
 
         RestTemplate restTemplate=new RestTemplate();

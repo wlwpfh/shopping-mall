@@ -3,6 +3,7 @@ package com.example.jpastudy.service;
 import com.example.jpastudy.dto.OrderDto;
 import com.example.jpastudy.dto.OrderItemDto;
 import com.example.jpastudy.dto.OrderListDto;
+import com.example.jpastudy.dto.pay.KakaoApproveResponse;
 import com.example.jpastudy.dto.pay.KakaoReadyResponse;
 import com.example.jpastudy.entity.Member;
 import com.example.jpastudy.entity.Order;
@@ -37,7 +38,7 @@ public class OrderService {
 
     private final KakaoPayService kakaoPayService;
 
-    public Long order(OrderDto orderDto, String email){
+    public Order order(OrderDto orderDto, String email){
         Item item=itemRepository.findById(orderDto.getItemId())
                 .orElseThrow(EntityNotFoundException::new);
         Member member=memberRepository.findByEmail(email);
@@ -48,11 +49,24 @@ public class OrderService {
 
         Order order=Order.createOrder(member, orderItemList);
 
-        //KakaoReadyResponse kakaoReadyResponse= kakaoPayService.kakaoPayReady(order, email);
+        return order;
+    }
+    public Long makeOrder(OrderDto orderDto, String email){
+        Order order=this.order(orderDto, email);
 
         orderRepository.save(order);
-
         return order.getId();
+    }
+    public String orderByPay(OrderDto orderDto, String email){
+        Long orderId= this.makeOrder(orderDto, email);
+        Order order=orderRepository.findById(orderId).orElseThrow(EntityNotFoundException::new);
+        KakaoReadyResponse response=kakaoPayService.kakaoPayReady(order, email);
+        return response.getNext_redirect_pc_url();
+    }
+
+    public KakaoApproveResponse completeOrderByPay(String pgToken, String email){
+        KakaoApproveResponse response= kakaoPayService.approvePayment(pgToken, email);
+        return response;
     }
 
     @Transactional(readOnly = true)

@@ -3,6 +3,7 @@ package com.example.jpastudy.controller;
 
 import com.example.jpastudy.dto.OrderDto;
 import com.example.jpastudy.dto.OrderListDto;
+import com.example.jpastudy.dto.pay.KakaoApproveRequest;
 import com.example.jpastudy.dto.pay.KakaoApproveResponse;
 import com.example.jpastudy.service.KakaoPayService;
 import com.example.jpastudy.service.OrderService;
@@ -28,8 +29,6 @@ import java.util.Optional;
 public class OrderController {
     private final OrderService orderService;
 
-    private final KakaoPayService kakaoPayService;
-
     @PostMapping(value = "/order")
     public ResponseEntity order(@RequestBody @Valid OrderDto orderDto, BindingResult bindingResult, Principal principal, Model model) {
         if (bindingResult.hasErrors()) {
@@ -38,16 +37,16 @@ public class OrderController {
             for (FieldError fieldError : fieldErrors) {
                 stringBuilder.append(fieldError.getDefaultMessage());
             }
-            return new ResponseEntity<String>(stringBuilder.toString(), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(stringBuilder.toString(), HttpStatus.BAD_REQUEST);
         }
         String email = principal.getName();
-        Long orderId;
+        String redirectUrl;
         try {
-             orderId = orderService.order(orderDto, email);
+            redirectUrl = orderService.orderByPay(orderDto, email);
         } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity("주문이 완료되었습니다.", HttpStatus.OK);
+        return ResponseEntity.ok(redirectUrl);
     }
 
     @GetMapping(value = {"/orders", "/orders/{page}"})
@@ -72,11 +71,10 @@ public class OrderController {
         return new ResponseEntity(orderId, HttpStatus.OK);
     }
 
-//    @GetMapping("/order/approve")
-//    public ResponseEntity approvePayment(@RequestParam("pg_token") String pgToken) {
-//        KakaoApproveResponse kakaoApproveResponse = kakaoPayService.approvePayment(pgToken);
-//
-//        return new ResponseEntity(kakaoApproveResponse, HttpStatus.OK);
-//    }
+    @GetMapping("/order")
+    public ResponseEntity approvePayment(@RequestParam("pg_token") String pgToken, Principal principal) {
+        KakaoApproveResponse kakaoApproveResponse = orderService.completeOrderByPay(pgToken, principal.getName());
+        return new ResponseEntity<>("결제 성공", HttpStatus.OK);
+    }
 
 }
