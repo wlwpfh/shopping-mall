@@ -58,8 +58,8 @@ public class OrderService {
         return order.getId();
     }
     public String orderByPay(OrderDto orderDto, String email){
-        Order order= this.order(orderDto, email);
-
+        Long orderId= this.makeOrder(orderDto, email);
+        Order order=orderRepository.findById(orderId).orElseThrow(EntityNotFoundException::new);
         KakaoReadyResponse response=kakaoPayService.kakaoPayReady(order, email);
         return response.getNext_redirect_pc_url();
     }
